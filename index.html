@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4CAF50">
+<title>驾考精选 · 科一科四精选题库</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f5f5;max-width:480px;margin:0 auto;min-height:100vh}
+.page{min-height:100vh}
+.hidden{display:none!important}
+
+/* 解锁页 */
+.lock-hero{background:linear-gradient(160deg,#4CAF50,#2E7D32);padding:50px 24px 36px;color:#fff;text-align:center}
+.lock-logo{font-size:64px;margin-bottom:12px}
+.lock-title{font-size:32px;font-weight:bold;margin-bottom:6px}
+.lock-sub{font-size:15px;opacity:.85;margin-bottom:22px}
+.lock-features{background:rgba(255,255,255,.15);border-radius:12px;padding:14px 18px;text-align:left}
+.feature{font-size:14px;padding:4px 0}
+.lock-card{background:#fff;margin:16px;border-radius:16px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.price-tag{text-align:center;font-size:14px;color:#666;margin-bottom:16px}
+.price{font-size:36px;font-weight:bold;color:#f44336}
+.pay-title{text-align:center;font-size:14px;color:#555;margin-bottom:12px;font-weight:500}
+.qr-wrap{width:200px;height:200px;margin:0 auto 12px;border-radius:12px;overflow:hidden;border:1px solid #eee}
+.qr-wrap img{width:100%;height:100%;object-fit:cover}
+.contact-hint{text-align:center;font-size:13px;color:#888;margin-bottom:18px}
+.contact-hint strong{color:#333}
+.divider{text-align:center;position:relative;margin:18px 0;color:#ccc;font-size:12px}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:36%;height:1px;background:#eee}
+.divider::before{left:0}.divider::after{right:0}
+.code-row{display:flex;gap:10px}
+#codeInput{flex:1;border:1.5px solid #e0e0e0;border-radius:10px;padding:12px 14px;font-size:15px;color:#333;text-transform:uppercase;outline:none}
+#codeInput:focus{border-color:#4CAF50}
+#unlockBtn{background:#4CAF50;color:#fff;border:none;border-radius:10px;padding:12px 18px;font-size:15px;font-weight:bold;cursor:pointer;white-space:nowrap}
+.code-error{color:#f44336;font-size:13px;margin-top:8px;min-height:18px}
+
+/* 主页导航 */
+.nav-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #eee;display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{flex:1;text-align:center;padding:10px 0 8px;cursor:pointer;color:#999}
+.nav-item.active{color:#4CAF50}
+.nav-icon{font-size:22px;margin-bottom:2px}
+.nav-label{font-size:11px}
+.tab-page{padding-bottom:70px}
+
+/* 首页 */
+.home-header{background:linear-gradient(135deg,#4CAF50,#2E7D32);padding:40px 20px 22px;color:#fff}
+.home-title{font-size:26px;font-weight:bold}
+.home-sub{font-size:13px;opacity:.8;margin-top:4px}
+.subject-tabs{display:flex;background:#fff;padding:12px 16px;gap:12px;border-bottom:1px solid #f0f0f0}
+.stab{flex:1;text-align:center;padding:10px 0;border-radius:50px;font-size:15px;color:#666;background:#f5f5f5;cursor:pointer}
+.stab.active{background:#4CAF50;color:#fff;font-weight:bold}
+.section-label{font-size:15px;font-weight:bold;color:#333;padding:16px 16px 10px}
+.category-list{padding:0 16px}
+.cat-item{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;display:flex;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.cat-num{width:38px;height:38px;border-radius:50%;background:#4CAF50;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;flex-shrink:0}
+.cat-info{flex:1;margin:0 12px}
+.cat-name{font-size:15px;color:#333;font-weight:500}
+.cat-count{font-size:12px;color:#999;margin-top:3px}
+.cat-btns{display:flex;gap:8px}
+.cat-btn{font-size:13px;padding:7px 14px;border-radius:50px;cursor:pointer}
+.cat-btn.study{background:#e3f2fd;color:#2196F3}
+.cat-btn.memorize{background:#e8f5e9;color:#4CAF50}
+
+/* 考试模式 */
+.exam-modes{display:flex;gap:12px;padding:0 16px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.exam-card{background:#fff;border-radius:16px;padding:20px 16px;min-width:140px;text-align:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.07);flex-shrink:0}
+.em-icon{font-size:40px;margin-bottom:8px}
+.em-name{font-size:15px;font-weight:bold;color:#333;margin-bottom:4px}
+.em-desc{font-size:12px;color:#999;margin-bottom:14px}
+.em-btn{background:#4CAF50;color:#fff;font-size:13px;padding:8px 16px;border-radius:50px;display:inline-block}
+.exam-records{padding:0 16px}
+.record-item{background:#fff;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px}
+.record-score{font-size:32px;font-weight:bold;min-width:65px}
+.record-score.pass{color:#4CAF50}.record-score.fail{color:#f44336}
+.record-detail{font-size:13px;color:#999;margin-top:4px}
+.record-time{font-size:12px;color:#bbb;margin-top:3px}
+
+/* 错题 */
+.wrong-start{margin:16px;background:#f44336;color:#fff;text-align:center;padding:16px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer}
+.wrong-item{background:#fff;border-radius:14px;margin:0 16px 12px;padding:16px}
+.wrong-q{font-size:15px;color:#333;line-height:1.6;margin-bottom:10px}
+.wrong-q-img{width:100%;border-radius:8px;margin-bottom:10px}
+.wrong-ans{font-size:13px;color:#666}
+.wrong-ans strong{color:#4CAF50}
+.wrong-remove{display:inline-block;margin-top:10px;font-size:12px;color:#f44336;border:1px solid #f44336;padding:5px 14px;border-radius:50px;cursor:pointer}
+.empty-box{text-align:center;padding:60px 0;color:#999}
+.empty-box .ei{font-size:60px;margin-bottom:12px}
+
+/* 我的 */
+.profile-card{background:#fff;margin:16px;border-radius:16px;padding:22px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.profile-avatar{font-size:50px}
+.profile-name{font-size:18px;font-weight:bold;color:#333}
+.profile-code{font-size:13px;color:#999;margin-top:4px}
+.menu-list{margin:0 16px}
+.menu-item{background:#fff;border-radius:12px;padding:17px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;font-size:15px;color:#333;cursor:pointer}
+.menu-count{color:#f44336;font-size:13px}
+.profile-footer{text-align:center;color:#ccc;font-size:13px;padding:28px 0 16px}
+
+/* 刷题/考试通用 */
+.study-header{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:14px 16px;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:10}
+.back-btn{font-size:16px;color:#4CAF50;cursor:pointer;padding:4px 8px}
+.study-progress{font-size:14px;color:#666}
+.grid-btn{font-size:13px;background:#f0f0f0;padding:6px 14px;border-radius:50px;color:#666;cursor:pointer}
+.progress-bar{height:4px;background:#e0e0e0}
+.progress-fill{height:100%;background:#4CAF50;transition:width .3s}
+.study-body{padding:16px 16px 80px}
+.q-tag{font-size:12px;padding:4px 12px;border-radius:6px;display:inline-block;margin-bottom:12px;background:#e8f5e9;color:#4CAF50}
+.q-tag.single{background:#e3f2fd;color:#2196F3}
+.q-num-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.q-num-text{font-size:13px;color:#999}
+.q-text{font-size:17px;color:#222;line-height:1.7;margin-bottom:16px;font-weight:500}
+.q-img{width:100%;border-radius:10px;margin-bottom:16px}
+.options{display:flex;flex-direction:column;gap:12px}
+.opt{display:flex;align-items:center;gap:14px;padding:15px 14px;border-radius:12px;border:2px solid #e8e8e8;background:#fafafa;cursor:pointer;transition:all .15s}
+.opt.selected{border-color:#2196F3;background:#e3f2fd}
+.opt.correct{border-color:#4CAF50;background:#e8f5e9}
+.opt.wrong{border-color:#f44336;background:#ffebee}
+.opt-letter{width:36px;height:36px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;flex-shrink:0;color:#666}
+.opt.selected .opt-letter{background:#2196F3;color:#fff}
+.opt.correct .opt-letter{background:#4CAF50;color:#fff}
+.opt.wrong .opt-letter{background:#f44336;color:#fff}
+.opt-text{font-size:15px;color:#333;flex:1;line-height:1.5}
+.explanation{background:#fff8e1;border-left:4px solid #FFC107;border-radius:8px;padding:14px;margin-top:16px}
+.exp-title{font-size:13px;color:#e67e22;font-weight:bold;margin-bottom:6px}
+.exp-text{font-size:14px;color:#666;line-height:1.7}
+.study-footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;padding:12px 16px;display:flex;gap:12px;border-top:1px solid #eee;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.foot-btn{flex:1;text-align:center;padding:14px 0;border-radius:50px;font-size:16px;font-weight:500;cursor:pointer}
+.foot-btn.prev{background:#f5f5f5;color:#666}
+.foot-btn.next{background:#4CAF50;color:#fff}
+.foot-center{flex:1;text-align:center;line-height:48px;font-size:15px;color:#999}
+
+/* 答题卡 */
+.grid-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200}
+.grid-panel{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 30px;z-index:201;max-height:70vh;overflow-y:auto}
+.grid-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.grid-title{font-size:17px;font-weight:bold;color:#333;margin-bottom:14px}
+.grid-legend{display:flex;align-items:center;font-size:12px;color:#999}
+.legend-dot{width:14px;height:14px;border-radius:4px;display:inline-block;vertical-align:middle;margin-right:4px}
+.legend-dot.green{background:#4CAF50}.legend-dot.red{border:2px solid #f44336;background:#fff}.legend-dot.gray{background:#f0f0f0;border:1px solid #ddd}
+.grid-wrap{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:16px}
+.grid-cell{aspect-ratio:1;border-radius:8px;border:1px solid #e0e0e0;background:#f8f8f8;display:flex;align-items:center;justify-content:center;font-size:12px;color:#666;cursor:pointer}
+.grid-cell.answered{background:#4CAF50;color:#fff;border-color:#4CAF50}
+.grid-cell.current{border:2px solid #f44336;color:#f44336;font-weight:bold}
+.grid-submit{background:#f44336;color:#fff;text-align:center;padding:16px;border-radius:50px;font-size:16px;font-weight:bold;cursor:pointer}
+
+/* 考试 */
+.exam-header{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:14px 16px;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10}
+.exam-timer{font-size:20px;font-weight:bold;color:#333}
+.exam-timer.warn{color:#f44336}
+.exam-info{font-size:13px;color:#999}
+.submit-btn{background:#f44336;color:#fff;font-size:14px;padding:8px 18px;border-radius:50px;cursor:pointer}
+
+/* 结果 */
+.result-hero{padding:60px 20px 36px;text-align:center;color:#fff;background:linear-gradient(135deg,#4CAF50,#2E7D32)}
+.result-hero.fail{background:linear-gradient(135deg,#FF5722,#BF360C)}
+.result-emoji{font-size:70px;margin-bottom:14px}
+.result-score{font-size:80px;font-weight:bold;line-height:1}
+.result-unit{font-size:22px;opacity:.85;margin-bottom:12px}
+.result-text{font-size:24px;font-weight:bold}
+.result-stats{background:#fff;margin:20px 16px;border-radius:16px;padding:22px;display:flex;justify-content:space-around;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.rs-item{text-align:center}
+.rs-num{font-size:36px;font-weight:bold;color:#333}
+.rs-num.green{color:#4CAF50}.rs-num.red{color:#f44336}.rs-num.gray{color:#999}
+.rs-label{font-size:12px;color:#999;margin-top:6px}
+.result-actions{padding:0 16px;display:flex;flex-direction:column;gap:12px}
+.ra-btn{text-align:center;padding:18px;border-radius:50px;font-size:17px;font-weight:500;cursor:pointer}
+.ra-btn.primary{background:#4CAF50;color:#fff}
+.ra-btn.outline{border:2px solid #f44336;color:#f44336}
+.ra-btn.ghost{background:#f0f0f0;color:#666}
+</style>
+</head>
+<body>
+
+<!-- 解锁页 -->
+<div id="lockPage" class="page">
+  <div class="lock-hero">
+    <div class="lock-logo">🚗</div>
+    <div class="lock-title">驾考精选</div>
+    <div class="lock-sub">科一 · 科四 精选题库</div>
+    <div class="lock-features">
+      <div class="feature">✅ 800道精选题目含图片解析</div>
+      <div class="feature">✅ 真实场景模拟考试</div>
+      <div class="feature">✅ 智能错题本自动收集</div>
+      <div class="feature">✅ 背题模式快速记忆</div>
+      <div class="feature">✅ 答题技巧助你快速过关</div>
+    </div>
+  </div>
+  <div class="lock-card">
+    <div class="price-tag">限时优惠 <span class="price">¥5</span></div>
+    <div class="pay-title">扫码付款，截图发微信获取解锁码</div>
+    <div class="qr-wrap"><img id="qrImg" src=""></div>
+    <div class="contact-hint">付款后添加微信：<strong>withdrawer</strong></div>
+    <div class="divider"><span>已有解锁码</span></div>
+    <div class="code-row">
+      <input id="codeInput" type="text" placeholder="输入解锁码" maxlength="12">
+      <button id="unlockBtn" onclick="tryUnlock()">解锁</button>
+    </div>
+    <div id="codeError" class="code-error"></div>
+  </div>
+</div>
+
+<!-- 主页面 -->
+<div id="mainPage" class="page hidden">
+  <div class="nav-bar">
+    <div class="nav-item active" onclick="switchTab('home')" id="tab-home"><div class="nav-icon">📚</div><div class="nav-label">题库</div></div>
+    <div class="nav-item" onclick="switchTab('exam')" id="tab-exam"><div class="nav-icon">📝</div><div class="nav-label">考试</div></div>
+    <div class="nav-item" onclick="switchTab('wrong')" id="tab-wrong"><div class="nav-icon">❌</div><div class="nav-label">错题</div></div>
+    <div class="nav-item" onclick="switchTab('profile')" id="tab-profile"><div class="nav-icon">👤</div><div class="nav-label">我的</div></div>
+  </div>
+  <!-- 题库 -->
+  <div id="homePage" class="tab-page">
+    <div class="home-header"><div class="home-title">驾考精选</div><div class="home-sub">2026年新规题库</div></div>
+    <div class="subject-tabs">
+      <div class="stab active" onclick="switchSubject('k1',this)">科目一</div>
+      <div class="stab" onclick="switchSubject('k4',this)">科目四</div>
+    </div>
+    <div class="section-label">📚 分类练习</div>
+    <div id="categoryList" class="category-list"></div>
+  </div>
+  <!-- 考试 -->
+  <div id="examPage" class="tab-page hidden">
+    <div class="home-header"><div class="home-title">模拟考试</div><div class="home-sub">随机45题 · 45分钟 · 90分及格</div></div>
+    <div class="exam-modes">
+      <div class="exam-card" onclick="startExam('k1')"><div class="em-icon">📘</div><div class="em-name">科目一</div><div class="em-desc">45题·45分钟</div><div class="em-btn">开始</div></div>
+      <div class="exam-card" onclick="startExam('k4')"><div class="em-icon">📗</div><div class="em-name">科目四</div><div class="em-desc">45题·45分钟</div><div class="em-btn">开始</div></div>
+      <div class="exam-card" onclick="startExam('mix')"><div class="em-icon">📚</div><div class="em-name">混合</div><div class="em-desc">45题·45分钟</div><div class="em-btn">开始</div></div>
+    </div>
+    <div class="section-label">📊 历史记录</div>
+    <div id="examRecords" class="exam-records"></div>
+  </div>
+  <!-- 错题 -->
+  <div id="wrongPage" class="tab-page hidden">
+    <div class="home-header"><div class="home-title">错题本</div></div>
+    <div id="wrongContent"></div>
+  </div>
+  <!-- 我的 -->
+  <div id="profilePage" class="tab-page hidden">
+    <div class="home-header"><div class="home-title">我的</div></div>
+    <div class="profile-card">
+      <div class="profile-avatar">🚗</div>
+      <div><div class="profile-name">驾考学员</div><div class="profile-code" id="profileCode"></div></div>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item" onclick="clearWrong()"><span>🗑 清空错题本</span><span class="menu-count" id="wrongCount"></span><span>›</span></div>
+      <div class="menu-item" onclick="clearProgress()"><span>🔄 重置学习进度</span><span>›</span></div>
+      <div class="menu-item" onclick="logout()"><span>🚪 退出登录</span><span>›</span></div>
+    </div>
+    <div class="profile-footer">驾考精选 · 祝你一次过！🎯</div>
+  </div>
+</div>
+
+<!-- 刷题页 -->
+<div id="studyPage" class="page hidden">
+  <div class="study-header">
+    <div class="back-btn" onclick="backFromStudy()">‹ 返回</div>
+    <div class="study-progress" id="studyProgress">1/100</div>
+    <div class="grid-btn" onclick="toggleGrid()">答题卡</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="studyBar"></div></div>
+  <div class="study-body">
+    <div class="q-tag" id="qTag">判断题</div>
+    <div class="q-text" id="qText"></div>
+    <img class="q-img" id="qImg" style="display:none">
+    <div class="options" id="options"></div>
+    <div class="explanation hidden" id="explanation"><div class="exp-title">💡 解题技巧</div><div class="exp-text" id="expText"></div></div>
+  </div>
+  <div class="study-footer">
+    <div class="foot-btn prev" onclick="prevQ()">上一题</div>
+    <div class="foot-btn next" onclick="nextQ()" id="nextBtn">下一题</div>
+  </div>
+  <div class="grid-overlay hidden" id="gridOverlay" onclick="toggleGrid()"></div>
+  <div class="grid-panel hidden" id="gridPanel">
+    <div class="grid-title">答题卡</div>
+    <div class="grid-wrap" id="gridWrap"></div>
+  </div>
+</div>
+
+<!-- 考试页 -->
+<div id="examRoom" class="page hidden">
+  <div class="exam-header">
+    <div class="exam-timer" id="examTimer">45:00</div>
+    <div class="exam-info" id="examInfo">已答 0/45</div>
+    <div class="submit-btn" onclick="confirmSubmit()">交卷</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="examBar"></div></div>
+  <div class="study-body">
+    <div class="q-num-header">
+      <span class="q-num-text" id="examQNum">第 1 题</span>
+      <span class="q-tag" id="examTag">判断题</span>
+      <span class="grid-btn" onclick="toggleExamGrid()" style="margin-left:auto">☰</span>
+    </div>
+    <div class="q-text" id="examQText"></div>
+    <img class="q-img" id="examQImg" style="display:none">
+    <div class="options" id="examOptions"></div>
+  </div>
+  <div class="study-footer">
+    <div class="foot-btn prev" onclick="examPrev()">‹ 上一题</div>
+    <div class="foot-center" id="examFoot">1/45</div>
+    <div class="foot-btn next" onclick="examNext()">下一题 ›</div>
+  </div>
+  <div class="grid-overlay hidden" id="examGridOverlay" onclick="toggleExamGrid()"></div>
+  <div class="grid-panel hidden" id="examGridPanel">
+    <div class="grid-header-row">
+      <div class="grid-title">答题卡</div>
+      <div class="grid-legend"><span class="legend-dot green"></span>已答 <span class="legend-dot red" style="margin-left:10px"></span>当前 <span class="legend-dot gray" style="margin-left:10px"></span>未答</div>
+    </div>
+    <div class="grid-wrap" id="examGridWrap"></div>
+    <div class="grid-submit" onclick="confirmSubmit()">立即交卷</div>
+  </div>
+</div>
+
+<!-- 结果页 -->
+<div id="resultPage" class="page hidden">
+  <div class="result-hero" id="resultHero">
+    <div class="result-emoji" id="rEmoji">🎉</div>
+    <div class="result-score" id="rScore">96</div>
+    <div class="result-unit">分</div>
+    <div class="result-text" id="rText">恭喜通过！</div>
+  </div>
+  <div class="result-stats">
+    <div class="rs-item"><div class="rs-num green" id="rCorrect">0</div><div class="rs-label">答对</div></div>
+    <div class="rs-item"><div class="rs-num red" id="rWrong">0</div><div class="rs-label">答错</div></div>
+    <div class="rs-item"><div class="rs-num gray" id="rSkip">0</div><div class="rs-label">未答</div></div>
+    <div class="rs-item"><div class="rs-num" id="rTotal">45</div><div class="rs-label">总题</div></div>
+  </div>
+  <div class="result-actions">
+    <div class="ra-btn primary" onclick="retryExam()">再考一次</div>
+    <div class="ra-btn outline" onclick="goWrongResult()" id="gWrongBtn">查看错题</div>
+    <div class="ra-btn ghost" onclick="goHomeResult()">返回首页</div>
+  </div>
+</div>
+
+<script src="js/qr.js"></script>
+<script src="js/codes.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
